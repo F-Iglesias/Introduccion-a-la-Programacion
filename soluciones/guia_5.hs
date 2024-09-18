@@ -111,3 +111,62 @@ mismosElementos (x:xs) ys
 capicua :: (Eq t) => [t] -> Bool -- Devuelve True si y solo si la lista es capicua
 capicua l = (l == reverso l)
 
+
+
+
+-- Ejercicio 3
+
+-- 3.1
+sumatoria :: [Integer] -> Integer
+sumatoria [] = 0
+sumatoria (x: xs) = x + sumatoria xs
+
+-- 3.2 
+productoria :: [Integer] -> Integer
+productoria [] = 1
+productoria (x:xs) = x * productoria xs
+
+-- 3.3
+maximo :: [Integer] -> Integer
+maximo [x]      = x
+maximo (x:xs)   = max x (maximo xs)
+
+-- 3.4
+-- sumarN n xs retorna la lista obtenida tras sumarle n a cada posición de xs
+sumarN :: Integer -> [Integer] -> [Integer]
+sumarN n [] = []
+sumarN n (x:xs) = (x + n) : (sumarN n xs)
+
+-- 3.5
+-- Le suma a cada posición de la lista su primer elemento.
+sumarElPrimero :: [Integer] -> [Integer]
+sumarElPrimero [] = []
+sumarElPrimero (x:xs) = sumarN x (x:xs)
+
+-- 3.6
+-- Le suma a cada posición de la lista su último elemento.
+sumarElUltimo :: [Integer] -> [Integer]
+sumarElUltimo [] = []
+sumarElUltimo xs = sumarN (ultimo xs) xs 
+
+-- 3.7
+-- Solo deja los elementos pares de la lista dada
+pares :: [Integer] -> [Integer]
+pares [] = []
+pares (x:xs)
+    | (mod x 2 == 0)    = x:(pares xs) 
+    | otherwise         = pares xs
+
+
+-- 3.8
+minimo :: [Integer] -> Integer
+minimo [x]      = x
+minimo (x:xs)   = min x (minimo xs)
+
+-- Devuelve la lista ordenada en orden ascendente
+ordenar :: [Integer] -> [Integer]
+ordenar [] = []
+ordenar xs = min_xs : (ordenar xs_2) -- Movemos el minimo al inicio y ordenamos lo restante
+    where
+        min_xs = minimo xs
+        xs_2 = quitarTodos min_xs xs -- Le quita todas las repeticiones de min_xs a xs
