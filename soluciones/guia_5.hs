@@ -133,7 +133,7 @@ maximo (x:xs)   = max x (maximo xs)
 
 -- 3.4
 -- sumarN n xs retorna la lista obtenida tras sumarle n a cada posición de xs
-sumarN :: Integer -> [Integer] -> [Integer]
+sumarN :: (Num t) => t -> [t] -> [t]
 sumarN n [] = []
 sumarN n (x:xs) = (x + n) : (sumarN n xs)
 
@@ -170,3 +170,34 @@ ordenar xs = min_xs : (ordenar xs_2) -- Movemos el minimo al inicio y ordenamos 
     where
         min_xs = minimo xs
         xs_2 = quitarTodos min_xs xs -- Le quita todas las repeticiones de min_xs a xs
+
+
+-- Ejercicio 5
+-- 5.1
+{- sumaAcumulada xs retorna una lista ys de misma longitud tal que,
+en casa posición i de ys, su valor es igual a la suma de los valores de xs en todas las posiciones anteriores a i-}
+sumaAcumulada :: (Num t) => [t] -> [t]
+sumaAcumulada [] = []
+sumaAcumulada (x:xs) = x : (sumarN x (sumaAcumulada xs))
+
+-- 5.2
+
+-- Para todo n > 1, devuelve el primer divisor distinto de 1
+primerDivisor :: Integer -> Integer
+primerDivisor n = primerDivisorDesde n 2
+    where
+        primerDivisorDesde n k
+            | mod n k == 0      = k
+            | otherwise         = primerDivisorDesde n (k+1)
+
+-- Retorna una lista de primos cuyo producto es el numero de entrada
+descomposicionPrima :: Integer -> [Integer]
+descomposicionPrima 1 = []
+descomposicionPrima n = d : descomposicionPrima (div n d)
+    where d = primerDivisor n --Notemos como el primerDivisor n necesariamente es primo
+
+
+-- Devuelve una lista de mismo largo que la de entrada, correspondiendo a la descomposicion prima de cada elemento
+descomponerEnPrimos :: [Integer] -> [[Integer]]
+descomponerEnPrimos [] = []
+descomponerEnPrimos (x:xs) = (descomposicionPrima x) : (descomponerEnPrimos xs)
